@@ -1,0 +1,12 @@
+[
+  {
+    "question": "What is the difference between supervised and unsupervised learning?",
+    "course": "machine_learning",
+    "source": "week1_intro.pdf"
+  },
+  {
+    "question": "How does backpropagation compute gradients?",
+    "course": "machine_learning",
+    "source": "week4_neural_nets.pptx"
+  }
+]
