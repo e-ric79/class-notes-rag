@@ -1,9 +1,9 @@
 """Streamlit UI:  streamlit run app.py"""
 import streamlit as st
 
-from src.config import INDEX_DIR, TOP_K
+from src.config import TOP_K
 from src.generate import answer
-from src.index import Index
+from src.index import Index, IndexMissing
 from src.retrieve import retrieve
 
 st.set_page_config(page_title="Class Notes Assistant", page_icon="📚")
@@ -15,11 +15,11 @@ def load_index() -> Index:
     return Index()
 
 
-if not (INDEX_DIR / "chunks.json").exists():
-    st.error("No index yet. Add notes to data/notes/<course>/ and run: python -m src.index")
+try:
+    index = load_index()
+except IndexMissing as e:
+    st.error(str(e))
     st.stop()
-
-index = load_index()
 
 with st.sidebar:
     course = st.selectbox("Course", ["All courses"] + index.courses)

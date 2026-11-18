@@ -4,8 +4,7 @@ Commands: /reset clears the conversation, /quit exits.
 You'll see each tool call the agent makes, which is the best way to learn how it behaves.
 """
 from src.agent import Agent
-from src.config import INDEX_DIR
-from src.index import Index
+from src.index import Index, IndexMissing
 
 
 def ask_user_in_terminal(question: str) -> str:
@@ -13,10 +12,12 @@ def ask_user_in_terminal(question: str) -> str:
 
 
 def main():
-    if not (INDEX_DIR / "chunks.json").exists():
-        raise SystemExit("No index yet. Add notes to data/notes/<course>/ and run: python -m src.index")
+    try:
+        index = Index()
+    except IndexMissing as e:
+        raise SystemExit(str(e))
 
-    agent = Agent(Index(), ask_user_fn=ask_user_in_terminal)
+    agent = Agent(index, ask_user_fn=ask_user_in_terminal)
     print("Notes agent ready. Ask a question (/reset, /quit).\n")
 
     while True:

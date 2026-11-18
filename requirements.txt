@@ -1,10 +1,13 @@
+# CPU-only PyTorch (no CUDA / nvidia packages). Must come before torch.
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch
+
 pypdf
 python-docx
 python-pptx
 sentence-transformers
 rank-bm25
+qdrant-client
 numpy
 groq
 streamlit

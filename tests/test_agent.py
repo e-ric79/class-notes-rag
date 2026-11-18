@@ -9,15 +9,14 @@ sys.path.insert(0, PROJECT)
 os.environ["GROQ_API_KEY"] = "test"
 
 # Stub heavy / unavailable third-party modules so we only test our own logic.
-for name in ["groq", "sentence_transformers", "rank_bm25", "dotenv", "numpy"]:
+for name in ["groq", "sentence_transformers", "rank_bm25", "dotenv", "numpy", "qdrant_client", "qdrant_client.models"]:
     try:
         __import__(name)
     except ImportError:
         m = types.ModuleType(name)
         m.Groq = lambda **kw: None
-        m.SentenceTransformer = object
-        m.BM25Okapi = object
         m.load_dotenv = lambda *a, **k: None
+        m.__getattr__ = lambda attr: object   # any other `from x import Y` gets a dummy class
         sys.modules[name] = m
 
 import src.tools as tools_mod
